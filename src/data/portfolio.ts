@@ -1,0 +1,43 @@
+import type { PortfolioItem } from '../types'
+
+export const portfolioItems: PortfolioItem[] = [
+  {
+    id: 'sentinel',
+    title: 'Sentinel',
+    client: 'REDACTED — Global Financial Services Group',
+    category: 'Corporate Brand Film',
+    description: 'A cinematic identity film for a 140-year-old institution confronting the question of what it means to endure.',
+    narrative: 'The brief asked for a "brand refresh film." We delivered something more difficult: an honest interrogation of what longevity actually means in finance — not stability, but the courage to change when change is the only responsible position. We shot across three continents in twelve days. No actors. Every face belongs to someone for whom this institution has been consequential.',
+    impact: 'Deployed across 34 markets. Internal engagement scores — their proxy for staff alignment with strategy — increased 34% in the quarter following release. The film is still used in onboarding three years later.',
+    tags: ['Brand Film', 'Corporate', 'Cinematic', 'Identity'],
+    thumbnail: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80',
+    year: 2023,
+    featured: true,
+  },
+  {
+    id: 'volta',
+    title: 'Volta',
+    client: 'European EV Infrastructure Startup',
+    category: 'Launch Campaign',
+    description: 'A product launch that refused to talk about the product. Instead: the psychology of the decision to change.',
+    narrative: 'Everyone launching in the EV space leads with technology. Range. Charge time. Network coverage. We led with the question nobody was asking directly: what is the resistance actually about? The campaign — built on street interviews, acoustic music, and a six-part documentary series — explored the hidden emotional cost of changing something as habitual as how we fuel movement. The product appeared only at the end. By then, people trusted us.',
+    impact: 'Waitlist grew 280% in the six weeks post-launch. The documentary series was picked up by a streaming platform as an independent production. The campaign won a Cannes Bronze Lion in the Purpose category.',
+    tags: ['Launch', 'Campaign', 'Documentary', 'Emotional Strategy'],
+    thumbnail: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1200&q=80',
+    year: 2023,
+    featured: true,
+  },
+  {
+    id: 'oracle',
+    title: 'Oracle',
+    client: 'Contemporary Art Foundation',
+    category: 'Branded Content Series',
+    description: 'Twelve portraits of working artists. Each episode: one question. No answer required.',
+    narrative: 'A foundation wanted to grow its digital audience without compromising its seriousness. The conventional approach — explainer content, artist walkthroughs, talking-head interviews — flattened the art into information. We proposed something different: twelve films, each built around a single unanswered question that the artist\'s work raises. We never explain the work. We let the question sit.',
+    impact: 'Average viewing time of 94% per episode — unusually high for arts documentary content. The series was shortlisted for a BAFTA in the short-form documentary category. Foundation membership grew 41% over the series run.',
+    tags: ['Documentary', 'Arts', 'Series', 'Portrait'],
+    thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',
+    year: 2024,
+    featured: true,
+  },
+]
