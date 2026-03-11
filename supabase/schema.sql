@@ -94,3 +94,44 @@ insert into daily_revelations (date, headline, narrative, why, subject, year, ca
 create index if not exists idx_revelations_date on daily_revelations(date);
 create index if not exists idx_quiz_share_token on quiz_responses(share_token);
 create index if not exists idx_quiz_created_at on quiz_responses(created_at desc);
+
+-- ── LinkedIn Revelations ───────────────────────────────────────
+-- 52-week content calendar for automated LinkedIn publishing
+create table if not exists revelations (
+  id                uuid primary key default uuid_generate_v4(),
+  title             text not null,
+  creative_figure   text not null,
+  category          text not null check (category in (
+                      'creative-personality',
+                      'landmark-campaign',
+                      'cultural-movement',
+                      'cinematic-breakthrough',
+                      'design-philosophy',
+                      'advertising-wisdom'
+                    )),
+  problem_statement text not null,
+  insight           text not null,
+  narrative         text not null,
+  post_copy         text not null,
+  publish_date      date unique,
+  day_of_week       text,
+  tone_tag          text not null check (tone_tag in ('standard', 'sunday')),
+  image_prompt      text not null,
+  image_url         text,
+  published         boolean default false,
+  publish_error     text,
+  created_at        timestamptz default now()
+);
+
+-- Enable RLS
+alter table revelations enable row level security;
+
+-- Service role can do everything (used by Netlify function)
+-- Public can read published entries only
+create policy "Public can read published revelations"
+  on revelations for select
+  using (published = true);
+
+-- Index for daily publish lookup
+create index if not exists idx_revelations_publish_date on revelations(publish_date);
+create index if not exists idx_revelations_published on revelations(published) where published = false;
