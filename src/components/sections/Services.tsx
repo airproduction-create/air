@@ -1,5 +1,18 @@
+import { useState, useEffect, useRef } from 'react'
 import { services } from '../../data/services'
 import { RevealText } from '../ui/RevealText'
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+    setIsDesktop(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return isDesktop
+}
 
 const iconPaths: Record<string, string> = {
   film: 'M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
@@ -8,6 +21,8 @@ const iconPaths: Record<string, string> = {
 }
 
 export function Services() {
+  const isDesktop = useIsDesktop()
+
   return (
     <section id="services" className="py-32 lg:py-40 bg-obsidian">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -25,51 +40,7 @@ export function Services() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
           {services.map((service, i) => (
             <RevealText key={service.id} delay={i * 150}>
-              <div className="bg-obsidian p-10 h-full flex flex-col gap-8 group hover:bg-surface transition-colors duration-500">
-                {/* Icon */}
-                <div className="w-10 h-10 border border-border flex items-center justify-center group-hover:border-gold transition-colors duration-300">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className="text-muted group-hover:text-gold transition-colors duration-300"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon]} />
-                  </svg>
-                </div>
-
-                {/* Audience tag */}
-                <div>
-                  <span className="font-mono text-xs text-gold tracking-ultra uppercase">
-                    {service.audience}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <div>
-                  <h3 className="font-serif text-2xl text-cream mb-4 leading-snug group-hover:text-gold transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="font-sans text-sm text-muted leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Capabilities */}
-                <div className="mt-auto pt-8 border-t border-border">
-                  <ul className="flex flex-col gap-2">
-                    {service.capabilities.map((cap) => (
-                      <li key={cap} className="flex items-start gap-3">
-                        <span className="text-gold text-xs mt-0.5 shrink-0">—</span>
-                        <span className="font-sans text-xs text-muted leading-relaxed">{cap}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <ServiceCard service={service} index={i} isDesktop={isDesktop} />
             </RevealText>
           ))}
         </div>
@@ -102,5 +73,161 @@ export function Services() {
         </RevealText>
       </div>
     </section>
+  )
+}
+
+/* ── Individual service card with hover reveal ────────────────────────────── */
+function ServiceCard({
+  service,
+  index,
+  isDesktop,
+}: {
+  service: typeof services[0]
+  index: number
+  isDesktop: boolean
+}) {
+  const [hovered, setHovered] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDesktop || !cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    setTilt({
+      x: ((e.clientY - cy) / rect.height) * -6,
+      y: ((e.clientX - cx) / rect.width) * 6,
+    })
+  }
+
+  const handleMouseLeave = () => {
+    setHovered(false)
+    setTilt({ x: 0, y: 0 })
+  }
+
+  return (
+    <div
+      ref={cardRef}
+      className="bg-obsidian h-full relative overflow-hidden"
+      onMouseEnter={() => isDesktop && setHovered(true)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: isDesktop && hovered
+          ? `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(4px)`
+          : 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0)',
+        transition: hovered ? 'transform 0.1s linear' : 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        zIndex: hovered ? 1 : 0,
+      }}
+    >
+      {/* Gold border reveal on hover */}
+      <div
+        className="absolute inset-0 border transition-opacity duration-500"
+        style={{
+          borderColor: '#c9a96e',
+          opacity: isDesktop && hovered ? 0.25 : 0,
+        }}
+      />
+
+      {/* Hover glow */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,169,110,0.06) 0%, transparent 100%)',
+          opacity: isDesktop && hovered ? 1 : 0,
+        }}
+      />
+
+      <div className="p-10 h-full flex flex-col gap-6 relative z-10">
+        {/* Icon */}
+        <div
+          className="w-10 h-10 border flex items-center justify-center transition-all duration-300"
+          style={{
+            borderColor: hovered ? '#c9a96e' : '#2a2a2a',
+          }}
+        >
+          <svg
+            width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="1.5"
+            style={{ color: hovered ? '#c9a96e' : '#6b6b6b', transition: 'color 0.3s' }}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon]} />
+          </svg>
+        </div>
+
+        {/* Audience */}
+        <span className="font-mono text-xs text-gold tracking-ultra uppercase">
+          {service.audience}
+        </span>
+
+        {/* Title */}
+        <div>
+          <h3
+            className="font-serif text-2xl text-cream mb-4 leading-snug transition-colors duration-300"
+            style={{ color: hovered ? '#c9a96e' : undefined }}
+          >
+            {service.title}
+          </h3>
+          <p className="font-sans text-sm text-muted leading-relaxed">
+            {service.description}
+          </p>
+        </div>
+
+        {/* Capabilities — always visible on mobile, slide up on desktop hover */}
+        <div
+          className="mt-auto pt-6 border-t border-border"
+          style={isDesktop ? {
+            opacity: hovered ? 1 : 0,
+            transform: hovered ? 'translateY(0)' : 'translateY(12px)',
+            transition: 'opacity 0.4s ease, transform 0.4s ease',
+            transitionDelay: hovered ? '0.05s' : '0s',
+          } : {}}
+        >
+          <p className="font-mono text-xs text-gold tracking-widest uppercase mb-4">
+            {isDesktop ? 'Capabilities' : ''}
+          </p>
+          <ul className="flex flex-col gap-2">
+            {service.capabilities.map((cap, j) => (
+              <li
+                key={cap}
+                className="flex items-start gap-3"
+                style={isDesktop ? {
+                  opacity: hovered ? 1 : 0,
+                  transform: hovered ? 'translateX(0)' : 'translateX(-8px)',
+                  transition: `opacity 0.3s ease ${0.05 + j * 0.04}s, transform 0.3s ease ${0.05 + j * 0.04}s`,
+                } : {}}
+              >
+                <span className="text-gold text-xs mt-0.5 shrink-0">—</span>
+                <span className="font-sans text-xs text-muted leading-relaxed">{cap}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Static capabilities for mobile */}
+        {!isDesktop && (
+          <div className="mt-auto pt-6 border-t border-border">
+            <ul className="flex flex-col gap-2">
+              {service.capabilities.map((cap) => (
+                <li key={cap} className="flex items-start gap-3">
+                  <span className="text-gold text-xs mt-0.5 shrink-0">—</span>
+                  <span className="font-sans text-xs text-muted leading-relaxed">{cap}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Corner accent on hover */}
+      <div
+        className="absolute bottom-0 right-0 w-12 h-12 transition-all duration-500"
+        style={{
+          background: 'linear-gradient(135deg, transparent 50%, rgba(201,169,110,0.1) 50%)',
+          opacity: isDesktop && hovered ? 1 : 0,
+        }}
+      />
+    </div>
   )
 }

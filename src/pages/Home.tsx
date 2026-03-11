@@ -6,16 +6,23 @@ import { Services } from '../components/sections/Services'
 import { About } from '../components/sections/About'
 import { RevealQuiz } from '../components/quiz/RevealQuiz'
 import { Contact } from '../components/sections/Contact'
+import { WingDivider } from '../components/ui/WingDivider'
 
 export function Home() {
   return (
     <Layout>
       <Hero />
+      <WingDivider />
       <DailyRevelation />
+      <WingDivider size="sm" />
       <Portfolio />
+      <WingDivider />
       <Services />
+      <WingDivider size="sm" />
       <About />
+      <WingDivider />
       <RevealQuiz />
+      <WingDivider size="sm" />
       <Contact />
     </Layout>
   )
