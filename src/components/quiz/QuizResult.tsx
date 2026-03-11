@@ -76,7 +76,7 @@ export function QuizResult({ result, shareToken, onReset }: QuizResultProps) {
                 <p className="font-mono text-xs text-muted tracking-widest uppercase mb-4">Your creative nature</p>
                 <p className="font-sans text-cream-dim leading-relaxed text-sm">{result.description}</p>
               </div>
-              <div className="border-l border-border pl-8">
+              <div className="border-t border-border pt-8 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-8">
                 <p className="font-mono text-xs text-gold tracking-widest uppercase mb-4">The revelation</p>
                 <p className="font-sans text-cream leading-relaxed text-sm italic">{result.revelation}</p>
               </div>

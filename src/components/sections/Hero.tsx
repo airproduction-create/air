@@ -88,8 +88,8 @@ export function Hero() {
         }}
       />
 
-      {/* Vertical rule */}
-      <div className="absolute left-6 lg:left-12 top-0 bottom-0 w-px bg-border" />
+      {/* Vertical rule — desktop only */}
+      <div className="hidden lg:block absolute left-12 top-0 bottom-0 w-px bg-border" />
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-32 pb-24">
@@ -163,7 +163,7 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <div
-        className={`absolute bottom-8 left-6 lg:left-12 flex flex-col items-center gap-3 transition-all duration-700 delay-700 ${
+        className={`absolute bottom-8 left-8 lg:left-12 flex flex-col items-center gap-3 transition-all duration-700 delay-700 ${
           loaded ? 'opacity-100' : 'opacity-0'
         }`}
       >

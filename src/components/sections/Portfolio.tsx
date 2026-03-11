@@ -133,7 +133,7 @@ export function Portfolio() {
                 <div
                   className="overflow-hidden transition-all duration-700"
                   style={{
-                    maxHeight: active === item.id ? '700px' : '0px',
+                    maxHeight: active === item.id ? '1400px' : '0px',
                     opacity: active === item.id ? 1 : 0,
                   }}
                 >

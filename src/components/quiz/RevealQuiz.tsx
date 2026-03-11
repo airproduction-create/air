@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useQuiz } from '../../hooks/useQuiz'
 import { quizQuestions } from '../../data/quiz'
 import { QuizQuestion } from './QuizQuestion'
@@ -6,6 +7,16 @@ import { RevealText } from '../ui/RevealText'
 
 export function RevealQuiz() {
   const quiz = useQuiz()
+  const quizBodyRef = useRef<HTMLDivElement>(null)
+
+  // Scroll quiz body into view on each step change (important on mobile)
+  useEffect(() => {
+    if (quiz.step === 'idle') return
+    const el = quizBodyRef.current
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY - 80
+    window.scrollTo({ top, behavior: 'smooth' })
+  }, [quiz.step])
 
   return (
     <section id="quiz" className="py-32 lg:py-40 border-t border-border bg-void">
@@ -25,6 +36,7 @@ export function RevealQuiz() {
         </RevealText>
 
         {/* Quiz states */}
+        <div ref={quizBodyRef}>
         {quiz.step === 'idle' && (
           <RevealText className="text-center">
             <button
@@ -39,6 +51,7 @@ export function RevealQuiz() {
 
         {quiz.step.startsWith('question-') && quiz.currentQuestion !== null && (
           <QuizQuestion
+            key={quiz.currentQuestion}
             question={quizQuestions[quiz.currentQuestion - 1]}
             questionNumber={quiz.currentQuestion}
             totalQuestions={quizQuestions.length}
@@ -67,6 +80,7 @@ export function RevealQuiz() {
             onReset={quiz.reset}
           />
         )}
+        </div>
 
         {/* Progress dots */}
         {quiz.step.startsWith('question-') && (
