@@ -135,3 +135,26 @@ create policy "Public can read published revelations"
 -- Index for daily publish lookup
 create index if not exists idx_revelations_publish_date on revelations(publish_date);
 create index if not exists idx_revelations_published on revelations(published) where published = false;
+
+-- ── Contact Inquiries ───────────────────────────────────────────
+create table if not exists contact_inquiries (
+  id         uuid primary key default uuid_generate_v4(),
+  name       text not null,
+  email      text not null,
+  audience   text,
+  context    text not null,
+  created_at timestamptz default now()
+);
+
+-- Enable RLS
+alter table contact_inquiries enable row level security;
+
+-- Anyone can insert (public contact form)
+create policy "Anyone can insert contact inquiries"
+  on contact_inquiries for insert
+  with check (true);
+
+-- Service role reads all (for admin / Netlify functions)
+-- No public select policy — submissions are private
+
+create index if not exists idx_contact_created_at on contact_inquiries(created_at desc);

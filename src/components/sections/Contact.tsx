@@ -3,12 +3,33 @@ import { RevealText } from '../ui/RevealText'
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', email: '', context: '', audience: '' })
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // In production: send to Supabase or form endpoint
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Something went wrong. Please try again.')
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -131,12 +152,17 @@ export function Contact() {
                     />
                   </div>
 
+                  {error && (
+                    <p className="font-mono text-xs text-rust text-center">{error}</p>
+                  )}
+
                   <button
                     type="submit"
+                    disabled={loading}
                     data-cursor
-                    className="btn-primary w-full justify-center"
+                    className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send →
+                    {loading ? 'Sending…' : 'Send →'}
                   </button>
                 </form>
               </RevealText>

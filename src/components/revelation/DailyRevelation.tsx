@@ -101,7 +101,7 @@ export function DailyRevelation() {
                   </div>
 
                   {/* Why — the key insight */}
-                  <div className="border-l-2 border-gold pl-6">
+                  <div className="border-l-2 border-gold pl-8">
                     <p className="font-mono text-xs text-gold tracking-widest uppercase mb-3">Why it matters</p>
                     <p className="font-sans text-cream leading-relaxed text-sm lg:text-base italic">
                       {revelation.why}

@@ -10,10 +10,18 @@ export const supabase = supabaseUrl && supabaseAnonKey
 
 // ── Daily Revelation ────────────────────────────────────────────────────────
 
+function getLocalDateString(): string {
+  const d = new Date()
+  const yyyy = d.getFullYear()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
+}
+
 export async function fetchTodaysRevelation(): Promise<Revelation | null> {
   if (!supabase) return null
 
-  const today = new Date().toISOString().split('T')[0]
+  const today = getLocalDateString()
 
   const { data, error } = await supabase
     .from('daily_revelations')
@@ -40,7 +48,7 @@ export function subscribeToRevelation(
 ) {
   if (!supabase) return null
 
-  const today = new Date().toISOString().split('T')[0]
+  const today = getLocalDateString()
 
   const subscription = supabase
     .channel('daily_revelations')

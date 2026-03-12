@@ -1,0 +1,16 @@
+{
+  "name": "AIR — Artificial Intelligence Revelations",
+  "short_name": "AIR",
+  "description": "AI content studio — cinematic advertising and branded content that reveals truth.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

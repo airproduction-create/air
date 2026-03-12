@@ -161,9 +161,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — desktop only to avoid overlapping content on mobile */}
       <div
-        className={`absolute bottom-8 left-8 lg:left-12 flex flex-col items-center gap-3 transition-all duration-700 delay-700 ${
+        className={`absolute bottom-8 left-8 lg:left-12 hidden sm:flex flex-col items-center gap-3 transition-all duration-700 delay-700 ${
           loaded ? 'opacity-100' : 'opacity-0'
         }`}
       >
