@@ -1,70 +1,62 @@
 /**
- * LinkedIn API client
- * Handles image upload and UGC post creation.
+ * LinkedIn API client — Posts API (w_member_social)
+ * Handles image upload and post creation on a personal LinkedIn profile.
  *
  * Required env vars:
- *   LINKEDIN_ACCESS_TOKEN    — OAuth token
- *   LINKEDIN_MEMBER_ID       — Numeric member ID (for personal posting with w_member_social)
+ *   LINKEDIN_ACCESS_TOKEN    — OAuth token with w_member_social scope
+ *   LINKEDIN_PERSON_URN      — Obfuscated person URN (e.g. "HhJtXno6Ii")
  *   LINKEDIN_ORGANIZATION_ID — Numeric company page ID (fallback, needs w_organization_social)
  */
 
-const BASE = 'https://api.linkedin.com/v2'
+const REST_BASE = 'https://api.linkedin.com/rest'
+const LINKEDIN_VERSION = '202503'
 
 function headers(extra: Record<string, string> = {}) {
   return {
     Authorization: `Bearer ${process.env.LINKEDIN_ACCESS_TOKEN}`,
     'X-Restli-Protocol-Version': '2.0.0',
+    'LinkedIn-Version': LINKEDIN_VERSION,
     ...extra,
   }
 }
 
-/** Returns the author URN — person if LINKEDIN_MEMBER_ID is set, otherwise organization. */
+/** Returns the author URN for the Posts API. */
 function getAuthorUrn(): string {
-  if (process.env.LINKEDIN_MEMBER_ID) {
-    return `urn:li:person:${process.env.LINKEDIN_MEMBER_ID}`
+  if (process.env.LINKEDIN_PERSON_URN) {
+    return `urn:li:person:${process.env.LINKEDIN_PERSON_URN}`
   }
   if (process.env.LINKEDIN_ORGANIZATION_ID) {
     return `urn:li:organization:${process.env.LINKEDIN_ORGANIZATION_ID}`
   }
-  throw new Error('Set LINKEDIN_MEMBER_ID or LINKEDIN_ORGANIZATION_ID')
+  throw new Error('Set LINKEDIN_PERSON_URN or LINKEDIN_ORGANIZATION_ID')
 }
 
 /**
  * Upload an image from a public URL to LinkedIn's media store.
- * Returns the LinkedIn asset URN (e.g. "urn:li:digitalmediaAsset:...").
+ * Returns the LinkedIn image URN (e.g. "urn:li:image:...").
  */
 export async function uploadImageToLinkedIn(imageUrl: string): Promise<string> {
   const authorUrn = getAuthorUrn()
 
-  // Step 1: Register the upload
-  const registerRes = await fetch(`${BASE}/assets?action=registerUpload`, {
+  // Step 1: Initialize the upload
+  const initRes = await fetch(`${REST_BASE}/images?action=initializeUpload`, {
     method: 'POST',
     headers: headers({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({
-      registerUploadRequest: {
-        recipes: ['urn:li:digitalmediaRecipe:feedshare-image'],
+      initializeUploadRequest: {
         owner: authorUrn,
-        serviceRelationships: [
-          {
-            relationshipType: 'OWNER',
-            identifier: 'urn:li:userGeneratedContent',
-          },
-        ],
       },
     }),
   })
 
-  if (!registerRes.ok) {
-    const body = await registerRes.text()
-    throw new Error(`LinkedIn registerUpload failed (${registerRes.status}): ${body}`)
+  if (!initRes.ok) {
+    const body = await initRes.text()
+    throw new Error(`LinkedIn initializeUpload failed (${initRes.status}): ${body}`)
   }
 
-  const registerData = await registerRes.json()
-  const uploadUrl: string =
-    registerData.value.uploadMechanism[
-      'com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest'
-    ].uploadUrl
-  const assetUrn: string = registerData.value.asset
+  const initData = await initRes.json()
+  const uploadUrl: string = initData.value.uploadUrl
+  const imageUrn: string = initData.value.image
 
   // Step 2: Fetch the image binary from the public URL
   const imgRes = await fetch(imageUrl)
@@ -74,7 +66,10 @@ export async function uploadImageToLinkedIn(imageUrl: string): Promise<string> {
   // Step 3: Upload binary to LinkedIn
   const uploadRes = await fetch(uploadUrl, {
     method: 'PUT',
-    headers: headers({ 'Content-Type': 'image/png' }),
+    headers: {
+      Authorization: `Bearer ${process.env.LINKEDIN_ACCESS_TOKEN}`,
+      'Content-Type': 'application/octet-stream',
+    },
     body: imgBuffer,
   })
 
@@ -83,46 +78,37 @@ export async function uploadImageToLinkedIn(imageUrl: string): Promise<string> {
     throw new Error(`LinkedIn image upload failed (${uploadRes.status}): ${body}`)
   }
 
-  return assetUrn
+  return imageUrn
 }
 
 /**
- * Create a LinkedIn UGC post (text + optional image) on the company page.
+ * Create a LinkedIn post (text + optional image).
+ * Uses the Posts API (replaces deprecated UGC Posts API).
  * Returns the post URN.
  */
 export async function createLinkedInPost(
   text: string,
-  imageAssetUrn?: string
+  imageUrn?: string
 ): Promise<string> {
   const authorUrn = getAuthorUrn()
 
-  const media = imageAssetUrn
-    ? [
-        {
-          status: 'READY',
-          description: { text: '' },
-          media: imageAssetUrn,
-          title: { text: '' },
-        },
-      ]
-    : undefined
-
-  const body = {
+  const body: Record<string, unknown> = {
     author: authorUrn,
+    commentary: text,
+    visibility: 'PUBLIC',
+    distribution: {
+      feedDistribution: 'MAIN_FEED',
+    },
     lifecycleState: 'PUBLISHED',
-    specificContent: {
-      'com.linkedin.ugc.ShareContent': {
-        shareCommentary: { text },
-        shareMediaCategory: imageAssetUrn ? 'IMAGE' : 'NONE',
-        ...(media ? { media } : {}),
-      },
-    },
-    visibility: {
-      'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
-    },
   }
 
-  const res = await fetch(`${BASE}/ugcPosts`, {
+  if (imageUrn) {
+    body.content = {
+      media: { id: imageUrn },
+    }
+  }
+
+  const res = await fetch(`${REST_BASE}/posts`, {
     method: 'POST',
     headers: headers({ 'Content-Type': 'application/json' }),
     body: JSON.stringify(body),
@@ -130,7 +116,7 @@ export async function createLinkedInPost(
 
   if (!res.ok) {
     const errBody = await res.text()
-    throw new Error(`LinkedIn ugcPosts failed (${res.status}): ${errBody}`)
+    throw new Error(`LinkedIn post failed (${res.status}): ${errBody}`)
   }
 
   const postId = res.headers.get('x-restli-id') ?? 'unknown'
