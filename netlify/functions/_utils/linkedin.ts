@@ -1,10 +1,11 @@
 /**
  * LinkedIn API client
- * Handles image upload and UGC post creation for the AIR CO company page.
+ * Handles image upload and UGC post creation.
  *
  * Required env vars:
- *   LINKEDIN_ACCESS_TOKEN   — OAuth token with w_organization_social scope
- *   LINKEDIN_ORGANIZATION_ID — Numeric company page ID (e.g. "12345678")
+ *   LINKEDIN_ACCESS_TOKEN    — OAuth token
+ *   LINKEDIN_MEMBER_ID       — Numeric member ID (for personal posting with w_member_social)
+ *   LINKEDIN_ORGANIZATION_ID — Numeric company page ID (fallback, needs w_organization_social)
  */
 
 const BASE = 'https://api.linkedin.com/v2'
@@ -17,12 +18,23 @@ function headers(extra: Record<string, string> = {}) {
   }
 }
 
+/** Returns the author URN — person if LINKEDIN_MEMBER_ID is set, otherwise organization. */
+function getAuthorUrn(): string {
+  if (process.env.LINKEDIN_MEMBER_ID) {
+    return `urn:li:person:${process.env.LINKEDIN_MEMBER_ID}`
+  }
+  if (process.env.LINKEDIN_ORGANIZATION_ID) {
+    return `urn:li:organization:${process.env.LINKEDIN_ORGANIZATION_ID}`
+  }
+  throw new Error('Set LINKEDIN_MEMBER_ID or LINKEDIN_ORGANIZATION_ID')
+}
+
 /**
  * Upload an image from a public URL to LinkedIn's media store.
  * Returns the LinkedIn asset URN (e.g. "urn:li:digitalmediaAsset:...").
  */
 export async function uploadImageToLinkedIn(imageUrl: string): Promise<string> {
-  const orgUrn = `urn:li:organization:${process.env.LINKEDIN_ORGANIZATION_ID}`
+  const authorUrn = getAuthorUrn()
 
   // Step 1: Register the upload
   const registerRes = await fetch(`${BASE}/assets?action=registerUpload`, {
@@ -31,7 +43,7 @@ export async function uploadImageToLinkedIn(imageUrl: string): Promise<string> {
     body: JSON.stringify({
       registerUploadRequest: {
         recipes: ['urn:li:digitalmediaRecipe:feedshare-image'],
-        owner: orgUrn,
+        owner: authorUrn,
         serviceRelationships: [
           {
             relationshipType: 'OWNER',
@@ -82,7 +94,7 @@ export async function createLinkedInPost(
   text: string,
   imageAssetUrn?: string
 ): Promise<string> {
-  const orgUrn = `urn:li:organization:${process.env.LINKEDIN_ORGANIZATION_ID}`
+  const authorUrn = getAuthorUrn()
 
   const media = imageAssetUrn
     ? [
@@ -96,7 +108,7 @@ export async function createLinkedInPost(
     : undefined
 
   const body = {
-    author: orgUrn,
+    author: authorUrn,
     lifecycleState: 'PUBLISHED',
     specificContent: {
       'com.linkedin.ugc.ShareContent': {
