@@ -79,11 +79,11 @@ export function Services() {
 /* ── Individual service card with hover reveal ────────────────────────────── */
 function ServiceCard({
   service,
-  index,
+    index: _index,
   isDesktop,
 }: {
   service: typeof services[0]
-  index: number
+      index: number
   isDesktop: boolean
 }) {
   const [hovered, setHovered] = useState(false)
