@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { portfolioItems } from '../../data/portfolio'
 import { RevealText } from '../ui/RevealText'
 import { Tag } from '../ui/Tag'
