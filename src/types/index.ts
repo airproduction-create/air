@@ -53,6 +53,7 @@ export interface PortfolioItem {
   impact: string
   tags: string[]
   thumbnail: string
+  vimeoId?: string
   year: number
   featured: boolean
 }
