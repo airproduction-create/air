@@ -141,23 +141,41 @@ export function Portfolio() {
                     >
                       <div className="border-t border-border">
                         <div className="grid grid-cols-1 lg:grid-cols-2">
-                          {/* Image — subtle rotateY on hover */}
+                          {/* Video or image */}
                           <div className="relative overflow-hidden aspect-video lg:aspect-auto lg:min-h-[320px]">
-                            <motion.img
-                              src={item.thumbnail}
-                              alt={item.title}
-                              className="w-full h-full object-cover grayscale-[40%]"
-                              loading="lazy"
-                              whileHover={isDesktop ? { scale: 1, rotateY: -3 } : undefined}
-                              initial={{ scale: 1.05 }}
-                              animate={{ scale: 1 }}
-                              transition={{ duration: 0.7 }}
-                              style={{ transformPerspective: 800 }}
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/70" />
-                            <div className="absolute bottom-4 left-4">
-                              <span className="font-mono text-xs text-muted">{item.year}</span>
-                            </div>
+                            {item.vimeoId ? (
+                              <>
+                                <iframe
+                                  src={`https://player.vimeo.com/video/${item.vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
+                                  frameBorder="0"
+                                  allow="autoplay; fullscreen; picture-in-picture"
+                                  allowFullScreen
+                                  className="absolute inset-0 w-full h-full"
+                                  title={item.title}
+                                />
+                                <div className="absolute bottom-4 left-4 z-10 pointer-events-none">
+                                  <span className="font-mono text-xs text-muted">{item.year}</span>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <motion.img
+                                  src={item.thumbnail}
+                                  alt={item.title}
+                                  className="w-full h-full object-cover grayscale-[40%]"
+                                  loading="lazy"
+                                  whileHover={isDesktop ? { scale: 1, rotateY: -3 } : undefined}
+                                  initial={{ scale: 1.05 }}
+                                  animate={{ scale: 1 }}
+                                  transition={{ duration: 0.7 }}
+                                  style={{ transformPerspective: 800 }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/70" />
+                                <div className="absolute bottom-4 left-4">
+                                  <span className="font-mono text-xs text-muted">{item.year}</span>
+                                </div>
+                              </>
+                            )}
                           </div>
 
                           {/* Case study content */}
