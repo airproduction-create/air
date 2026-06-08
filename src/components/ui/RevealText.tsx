@@ -1,46 +1,50 @@
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface RevealTextProps {
-  children: React.ReactNode
-  className?: string
-  delay?: number
+    children: React.ReactNode
+    className?: string
+    delay?: number
+    depth?: boolean
+    direction?: 'up' | 'left' | 'right'
 }
 
 export function RevealText({
-  children,
-  className = '',
-  delay = 0,
+    children,
+    className = '',
+    delay = 0,
+    depth = false,
+    direction = 'up',
 }: RevealTextProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+    const directionMap = {
+          up: { y: 16, x: 0 },
+          left: { y: 0, x: -20 },
+          right: { y: 0, x: 20 },
+    }
 
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setVisible(true), delay)
-          observer.unobserve(el)
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [delay])
+  const d = directionMap[direction]
 
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-      } ${className}`}
-      style={{ transitionDelay: visible ? `${delay}ms` : '0ms' }}
-    >
-      {children}
-    </div>
-  )
+        <motion.div
+                initial={{
+                          opacity: 0,
+                          y: d.y,
+                          x: d.x,
+                }}
+                whileInView={{
+                          opacity: 1,
+                          y: 0
+                          x: 0,
+                }}
+                viewport={{ once: true, amount: 0.05 }}
+                transition={{
+                          duration: 0.5,
+                          delay: delay / 1000,
+                          ease: [0.16, 1, 0.3, 1],
+                }}
+                className={className}
+                style={depth ? { transformStyle: 'preserve-3d' } : undefined}
+              >
+          {children}
+        </motion.div>
+      )
 }
