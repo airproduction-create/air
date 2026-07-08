@@ -22,7 +22,7 @@ export function CursorEffect() {
         ref={dotRef}
         className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[9998] transition-opacity duration-200"
         style={{
-          background: cursor.isHovering ? '#e0c080' : '#c9a96e',
+          background: cursor.isHovering ? '#ff7a33' : '#ff5700',
           opacity: cursor.x < 0 ? 0 : 1,
         }}
       />
@@ -31,7 +31,7 @@ export function CursorEffect() {
         ref={ringRef}
         className="fixed top-0 left-0 w-10 h-10 rounded-full pointer-events-none z-[9997]"
         style={{
-          border: `1px solid ${cursor.isHovering ? 'rgba(224,192,128,0.6)' : 'rgba(201,169,110,0.3)'}`,
+          border: `1px solid ${cursor.isHovering ? 'rgba(255,122,51,0.7)' : 'rgba(255,87,0,0.4)'}`,
           transform: `translate(${cursor.x - 20}px, ${cursor.y - 20}px)`,
           transition: 'transform 0.12s ease-out, border-color 0.2s ease, width 0.2s ease, height 0.2s ease',
           width: cursor.isHovering ? '56px' : '40px',
@@ -48,7 +48,7 @@ export function CursorEffect() {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(201,169,110,0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,87,0,0.05) 0%, transparent 70%)',
           transform: `translate(${cursor.x - 150}px, ${cursor.y - 150}px)`,
           transition: 'transform 0.3s ease-out',
           opacity: cursor.x < 0 ? 0 : 1,

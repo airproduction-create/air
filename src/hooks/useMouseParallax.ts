@@ -1,7 +1,7 @@
 import { useMotionValue, useSpring } from 'framer-motion'
 import { useEffect } from 'react'
 
-export function useMouseParallax(_strength: number = 0.02) {
+export function useMouseParallax() {
   const mouseX = useMotionValue(0.5)
   const mouseY = useMotionValue(0.5)
 

@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Revelation, QuizResponse } from '../types'
+import type { Revelation, QuizResponse, PortfolioItem, Service } from '../types'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
@@ -7,6 +7,99 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null
+
+// ── Portfolio / Work ─────────────────────────────────────────────────────────
+
+// DB row shape (snake_case) for the portfolio_items table.
+interface PortfolioRow {
+  slug: string
+  title: string
+  client: string
+  category: string
+  description: string | null
+  narrative: string | null
+  impact: string | null
+  tags: string[] | null
+  thumbnail: string | null
+  vimeo_id: string | null
+  year: number
+  featured: boolean | null
+}
+
+function mapPortfolioRow(row: PortfolioRow): PortfolioItem {
+  return {
+    id: row.slug,
+    title: row.title,
+    client: row.client,
+    category: row.category,
+    description: row.description ?? '',
+    narrative: row.narrative ?? '',
+    impact: row.impact ?? '',
+    tags: row.tags ?? [],
+    thumbnail: row.thumbnail ?? '',
+    vimeoId: row.vimeo_id ?? undefined,
+    year: row.year,
+    featured: row.featured ?? false,
+  }
+}
+
+/**
+ * Fetch published portfolio items from Supabase, ordered by sort_order.
+ * Returns null when Supabase isn't configured or the query fails, so callers
+ * can fall back to the local data file in src/data/portfolio.ts.
+ */
+export async function fetchPortfolioItems(): Promise<PortfolioItem[] | null> {
+  if (!supabase) return null
+
+  const { data, error } = await supabase
+    .from('portfolio_items')
+    .select('*')
+    .eq('published', true)
+    .order('sort_order', { ascending: true })
+
+  if (error || !data || data.length === 0) return null
+  return (data as PortfolioRow[]).map(mapPortfolioRow)
+}
+
+// ── Services / Who We Work With ──────────────────────────────────────────────
+
+interface ServiceRow {
+  slug: string
+  audience: string
+  title: string
+  description: string | null
+  capabilities: string[] | null
+  icon: string | null
+}
+
+function mapServiceRow(row: ServiceRow): Service {
+  return {
+    id: row.slug,
+    audience: row.audience,
+    title: row.title,
+    description: row.description ?? '',
+    capabilities: row.capabilities ?? [],
+    icon: row.icon ?? 'film',
+  }
+}
+
+/**
+ * Fetch published services from Supabase, ordered by sort_order.
+ * Returns null when Supabase isn't configured or the query fails, so callers
+ * can fall back to the local data file in src/data/services.ts.
+ */
+export async function fetchServices(): Promise<Service[] | null> {
+  if (!supabase) return null
+
+  const { data, error } = await supabase
+    .from('services')
+    .select('*')
+    .eq('published', true)
+    .order('sort_order', { ascending: true })
+
+  if (error || !data || data.length === 0) return null
+  return (data as ServiceRow[]).map(mapServiceRow)
+}
 
 // ── Daily Revelation ────────────────────────────────────────────────────────
 

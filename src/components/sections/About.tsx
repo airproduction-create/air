@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { RevealText } from '../ui/RevealText'
-import { WingWatermark } from '../ui/WingDivider'
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -47,9 +46,6 @@ export function About() {
 
   return (
     <section id="about" className="py-32 lg:py-40 border-t border-border relative overflow-hidden">
-      {/* Subtle wing watermark */}
-      <WingWatermark />
-
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
 
@@ -61,7 +57,7 @@ export function About() {
             <RevealText delay={100}>
               <h2 className="font-serif text-4xl lg:text-5xl font-medium text-cream leading-tight mb-8">
                 Most creative work<br />
-                <span className="italic text-gradient">says too much.</span>
+                <span className="text-muted">says too much.</span>
               </h2>
             </RevealText>
             <RevealText delay={200}>
@@ -99,7 +95,7 @@ export function About() {
                   <div
                     className="absolute left-0 top-0 bottom-0 w-0.5 transition-all duration-500"
                     style={{
-                      background: '#c9a96e',
+                      background: '#ff5700',
                       opacity: hoveredPrinciple === item.number && isDesktop ? 1 : 0,
                       transform: hoveredPrinciple === item.number && isDesktop ? 'scaleY(1)' : 'scaleY(0)',
                       transformOrigin: 'top',
@@ -112,7 +108,7 @@ export function About() {
                       <div className="flex-1">
                         <h3
                           className="font-serif text-lg text-cream mb-2 transition-colors duration-300"
-                          style={{ color: hoveredPrinciple === item.number && isDesktop ? '#c9a96e' : undefined }}
+                          style={{ color: hoveredPrinciple === item.number && isDesktop ? '#ff5700' : undefined }}
                         >
                           {item.principle}
                         </h3>

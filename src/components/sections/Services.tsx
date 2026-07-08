@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { services } from '../../data/services'
+import type { Service } from '../../types'
 import { RevealText } from '../ui/RevealText'
+import { useServices } from '../../hooks/useServices'
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false)
@@ -22,6 +23,7 @@ const iconPaths: Record<string, string> = {
 
 export function Services() {
   const isDesktop = useIsDesktop()
+  const { items: services } = useServices()
 
   return (
     <section id="services" className="py-32 lg:py-40 bg-obsidian">
@@ -32,7 +34,7 @@ export function Services() {
           <span className="section-label block mb-4">— Who We Work With</span>
           <h2 className="font-serif text-4xl lg:text-6xl font-medium text-cream leading-tight">
             Intelligence applied<br />
-            <span className="italic text-gradient">to your specific problem.</span>
+            <span className="text-muted">to your specific problem.</span>
           </h2>
         </RevealText>
 
@@ -40,7 +42,7 @@ export function Services() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
           {services.map((service, i) => (
             <RevealText key={service.id} delay={i * 150}>
-              <ServiceCard service={service} index={i} isDesktop={isDesktop} />
+              <ServiceCard service={service} isDesktop={isDesktop} />
             </RevealText>
           ))}
         </div>
@@ -79,11 +81,9 @@ export function Services() {
 /* ── Individual service card with hover reveal ────────────────────────────── */
 function ServiceCard({
   service,
-    index: _index,
   isDesktop,
 }: {
-  service: typeof services[0]
-      index: number
+  service: Service
   isDesktop: boolean
 }) {
   const [hovered, setHovered] = useState(false)
@@ -125,7 +125,7 @@ function ServiceCard({
       <div
         className="absolute inset-0 border transition-opacity duration-500"
         style={{
-          borderColor: '#c9a96e',
+          borderColor: '#ff5700',
           opacity: isDesktop && hovered ? 0.25 : 0,
         }}
       />
@@ -134,7 +134,7 @@ function ServiceCard({
       <div
         className="absolute inset-0 pointer-events-none transition-opacity duration-500"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,169,110,0.06) 0%, transparent 100%)',
+          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,87,0,0.06) 0%, transparent 100%)',
           opacity: isDesktop && hovered ? 1 : 0,
         }}
       />
@@ -144,13 +144,13 @@ function ServiceCard({
         <div
           className="w-10 h-10 border flex items-center justify-center transition-all duration-300"
           style={{
-            borderColor: hovered ? '#c9a96e' : '#2a2a2a',
+            borderColor: hovered ? '#ff5700' : '#2a2a2a',
           }}
         >
           <svg
             width="20" height="20" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" strokeWidth="1.5"
-            style={{ color: hovered ? '#c9a96e' : '#6b6b6b', transition: 'color 0.3s' }}
+            style={{ color: hovered ? '#ff5700' : '#6b6b6b', transition: 'color 0.3s' }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon]} />
           </svg>
@@ -165,7 +165,7 @@ function ServiceCard({
         <div>
           <h3
             className="font-serif text-2xl text-cream mb-4 leading-snug transition-colors duration-300"
-            style={{ color: hovered ? '#c9a96e' : undefined }}
+            style={{ color: hovered ? '#ff5700' : undefined }}
           >
             {service.title}
           </h3>
@@ -224,7 +224,7 @@ function ServiceCard({
       <div
         className="absolute bottom-0 right-0 w-12 h-12 transition-all duration-500"
         style={{
-          background: 'linear-gradient(135deg, transparent 50%, rgba(201,169,110,0.1) 50%)',
+          background: 'linear-gradient(135deg, transparent 50%, rgba(255,87,0,0.1) 50%)',
           opacity: isDesktop && hovered ? 1 : 0,
         }}
       />

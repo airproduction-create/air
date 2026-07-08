@@ -18,7 +18,7 @@ export function FloatingGeometry({
   position,
   rotationDuration = 12,
   opacity = 0.08,
-  color = '#c9a96e',
+  color = '#c8c8cc',
   delay = 0,
 }: FloatingGeometryProps) {
   const isDesktop = useIsDesktop()

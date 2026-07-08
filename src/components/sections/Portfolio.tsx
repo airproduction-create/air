@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { portfolioItems } from '../../data/portfolio'
 import { RevealText } from '../ui/RevealText'
 import { Tag } from '../ui/Tag'
 import { useIsDesktop } from '../../hooks/useIsDesktop'
+import { usePortfolio } from '../../hooks/usePortfolio'
 
 export function Portfolio() {
   const [active, setActive] = useState<string | null>(null)
   const [hovered, setHovered] = useState<string | null>(null)
   const isDesktop = useIsDesktop()
+  const { items: portfolioItems } = usePortfolio()
 
   return (
     <section id="portfolio" className="py-32 lg:py-40 relative overflow-hidden">
@@ -20,7 +21,7 @@ export function Portfolio() {
           <span className="section-label block mb-4">— Selected Work</span>
           <h2 className="font-serif text-4xl lg:text-6xl font-medium text-cream leading-tight">
             Three projects.<br />
-            <span className="italic text-gradient">Each a revelation.</span>
+            <span className="text-muted">Each a revelation.</span>
           </h2>
         </RevealText>
 
@@ -71,9 +72,9 @@ export function Portfolio() {
                     <span
                       className="font-mono text-xs transition-colors duration-300"
                       style={{
-                        color: hovered === item.id || active === item.id ? '#c9a96e' : '#6b6b6b',
+                        color: hovered === item.id || active === item.id ? '#ff5700' : '#6b6b6b',
                         textShadow: hovered === item.id || active === item.id
-                          ? '0 0 12px rgba(201,169,110,0.4)'
+                          ? '0 0 12px rgba(255,87,0,0.4)'
                           : 'none',
                       }}
                     >
@@ -86,7 +87,7 @@ export function Portfolio() {
                     <h3
                       className="font-serif text-2xl lg:text-3xl text-cream mb-1 transition-all duration-300"
                       style={{
-                        color: hovered === item.id || active === item.id ? '#c9a96e' : undefined,
+                        color: hovered === item.id || active === item.id ? '#ff5700' : undefined,
                         transform: isDesktop && hovered === item.id ? 'translateX(6px)' : 'translateX(0)',
                       }}
                     >
@@ -107,7 +108,7 @@ export function Portfolio() {
                     <motion.div
                       className="w-6 h-6 border flex items-center justify-center"
                       style={{
-                        borderColor: active === item.id ? '#c9a96e' : '#2a2a2a',
+                        borderColor: active === item.id ? '#ff5700' : '#2a2a2a',
                       }}
                       animate={{ rotate: active === item.id ? 45 : 0 }}
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -216,7 +217,7 @@ export function Portfolio() {
               <p className="font-mono text-xs text-gold tracking-widest uppercase mb-3">— Next</p>
               <h3 className="font-serif text-2xl lg:text-3xl text-cream leading-tight">
                 Have a project that needs<br className="hidden lg:block" />
-                <span className="italic text-gradient"> the same rigour?</span>
+                <span className="text-muted"> the same rigour?</span>
               </h3>
             </div>
             <a href="#contact" data-cursor className="btn-primary shrink-0">

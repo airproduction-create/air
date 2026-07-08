@@ -48,7 +48,7 @@ export function Contact() {
             <RevealText delay={100}>
               <h2 className="font-serif text-4xl lg:text-5xl font-medium text-cream leading-tight mb-8">
                 Tell us what you're<br />
-                <span className="italic text-gradient">trying to reveal.</span>
+                <span className="text-muted">trying to reveal.</span>
               </h2>
             </RevealText>
             <RevealText delay={200}>
@@ -139,7 +139,7 @@ export function Contact() {
                           required
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          className="w-full bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold focus:shadow-[0_0_12px_rgba(201,169,110,0.15)] transition-all duration-200"
+                          className="w-full bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold focus:shadow-[0_0_12px_rgba(255,87,0,0.15)] transition-all duration-200"
                           placeholder="Your name"
                         />
                       </div>
@@ -151,7 +151,7 @@ export function Contact() {
                           required
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          className="w-full bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold focus:shadow-[0_0_12px_rgba(201,169,110,0.15)] transition-all duration-200"
+                          className="w-full bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold focus:shadow-[0_0_12px_rgba(255,87,0,0.15)] transition-all duration-200"
                           placeholder="you@company.com"
                         />
                       </div>
@@ -165,7 +165,7 @@ export function Contact() {
                           value={form.context}
                           onChange={(e) => setForm({ ...form, context: e.target.value })}
                           rows={4}
-                          className="w-full bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold focus:shadow-[0_0_12px_rgba(201,169,110,0.15)] transition-all duration-200 resize-none"
+                          className="w-full bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold focus:shadow-[0_0_12px_rgba(255,87,0,0.15)] transition-all duration-200 resize-none"
                           placeholder="Tell us about the problem beneath the brief…"
                         />
                       </div>

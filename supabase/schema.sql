@@ -158,3 +158,37 @@ create policy "Anyone can insert contact inquiries"
 -- No public select policy — submissions are private
 
 create index if not exists idx_contact_created_at on contact_inquiries(created_at desc);
+
+-- ── Portfolio / Work ───────────────────────────────────────────
+-- Powers the Work section. Public read-only; edit rows in the
+-- Supabase Table Editor. Seed data lives in
+-- supabase/migrations/20260708_portfolio.sql
+create table if not exists portfolio_items (
+  id          uuid primary key default uuid_generate_v4(),
+  slug        text not null unique,
+  title       text not null,
+  client      text not null,
+  category    text not null,
+  description text not null default '',
+  narrative   text not null default '',
+  impact      text not null default '',
+  tags        text[] not null default '{}',
+  thumbnail   text not null default '',
+  vimeo_id    text,
+  year        integer not null,
+  featured    boolean not null default false,
+  sort_order  integer not null default 0,
+  published   boolean not null default true,
+  created_at  timestamptz default now()
+);
+
+-- Enable RLS
+alter table portfolio_items enable row level security;
+
+-- Public reads published items only
+create policy "Anyone can read published portfolio items"
+  on portfolio_items for select
+  using (published = true);
+
+create index if not exists idx_portfolio_sort on portfolio_items(sort_order asc);
+create index if not exists idx_portfolio_published on portfolio_items(published);

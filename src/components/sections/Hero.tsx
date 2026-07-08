@@ -1,23 +1,6 @@
 import { useRef } from 'react'
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValue,
-} from 'framer-motion'
-import { WingWatermark } from '../ui/WingDivider'
-import { PerspectiveGrid } from '../ui/PerspectiveGrid'
-import { FloatingGeometry } from '../ui/FloatingGeometry'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useIsDesktop } from '../../hooks/useIsDesktop'
-import { useMouseParallax } from '../../hooks/useMouseParallax'
-
-const headlineLines = ["We don't", 'make content.', 'We reveal truth.']
-
-const stats = [
-  { value: 'AI-Native', label: 'Production Methodology' },
-  { value: '100%', label: 'Human Insight at the Core' },
-]
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -28,242 +11,118 @@ export function Hero() {
     offset: ['start start', 'end start'],
   })
 
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, 120])
-  const scrollFade = useTransform(scrollYProgress, [0, 0.3], [1, 0])
-  const { mouseX, mouseY } = useMouseParallax(0.03)
-  const glowX = useTransform(mouseX, (v: number) => `${v * 100}%`)
-  const glowY = useTransform(mouseY, (v: number) => `${v * 100}%`)
-  const glowBg = useTransform(
-    [glowX, glowY],
-    ([x, y]) =>
-      `radial-gradient(ellipse 45% 40% at ${x} ${y}, rgba(201,169,110,0.07) 0%, transparent 100%)`
-  )
+  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 90])
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -40])
+  const scrollFade = useTransform(scrollYProgress, [0, 0.25], [1, 0])
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+      className="relative min-h-screen overflow-hidden bg-void"
     >
-      {/* Wing watermark background */}
-      <WingWatermark className="top-1/2 -translate-y-1/2" />
-
-      {/* 3D Perspective grid floor — desktop only */}
-      <PerspectiveGrid />
-
-      {/* Background grid — parallax on desktop */}
-      <motion.div
-        className="absolute inset-0 opacity-[0.03]"
+      {/* Studio-light backdrop: soft light pooling top-centre, fading to black */}
+      <div
+        className="absolute inset-0"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(201,169,110,0.5) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201,169,110,0.5) 1px, transparent 1px)
-          `,
-          backgroundSize: '80px 80px',
-          y: isDesktop ? gridY : 0,
+          background:
+            'radial-gradient(120% 80% at 50% -10%, #242428 0%, #141416 34%, #0a0a0b 62%, #060606 100%)',
         }}
       />
 
-      {/* Floating 3D geometry — desktop only */}
-      <FloatingGeometry
-        shape="ring"
-        size={120}
-        position={{ top: '15%', right: '8%' }}
-        opacity={0.06}
-        rotationDuration={14}
-      />
-      <FloatingGeometry
-        shape="diamond"
-        size={80}
-        position={{ top: '60%', left: '5%' }}
-        opacity={0.05}
-        rotationDuration={18}
-        delay={2}
-      />
-      <FloatingGeometry
-        shape="pyramid"
-        size={60}
-        position={{ top: '30%', left: '15%' }}
-        opacity={0.04}
-        rotationDuration={22}
-        delay={4}
-      />
+      {/* Full-bleed B&W portrait (placeholder)
+          Swap the inner block for <img src="/hero.jpg" className="h-full w-full object-cover object-top grayscale" />
+          once a real B&W portrait is provided. */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center pointer-events-none"
+        style={{ y: isDesktop ? portraitY : 0 }}
+        initial={{ opacity: 0, scale: 1.03 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div
+          className="relative h-[88%] w-[clamp(300px,40vw,560px)] grayscale"
+          style={{
+            background:
+              'radial-gradient(56% 38% at 50% 30%, #6a6a72 0%, #3a3a40 26%, #1c1c20 55%, #101012 74%, transparent 86%)',
+            WebkitMaskImage:
+              'radial-gradient(74% 92% at 50% 42%, #000 58%, transparent 94%)',
+            maskImage:
+              'radial-gradient(74% 92% at 50% 42%, #000 58%, transparent 94%)',
+          }}
+        >
+          {/* head + shoulders silhouette hint + soft rim light */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(20% 15% at 50% 30%, rgba(235,235,240,0.22) 0%, transparent 72%), radial-gradient(42% 30% at 50% 80%, rgba(200,200,210,0.10) 0%, transparent 78%), radial-gradient(60% 60% at 62% 26%, rgba(255,255,255,0.08) 0%, transparent 55%)',
+            }}
+          />
+        </div>
+      </motion.div>
 
-      {/* Mouse-tracking radial glow — desktop only */}
-      {isDesktop && (
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: glowBg }}
-        />
-      )}
-
-      {/* Static glow fallback */}
+      {/* Vignette to seat the portrait into the background */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,169,110,0.03) 0%, transparent 100%)',
+            'radial-gradient(80% 70% at 50% 50%, transparent 40%, rgba(6,6,6,0.55) 100%)',
         }}
       />
 
-      {/* Vertical rule — desktop only */}
-      <div className="hidden lg:block absolute left-12 top-0 bottom-0 w-px bg-border" />
-
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 pt-32 pb-24">
-        {/* Eyebrow */}
-        <motion.div
-          className="flex items-center gap-4 mb-12"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="w-8 h-px bg-gold" />
-          <span className="font-mono text-xs text-gold tracking-ultra uppercase">
-            Artificial Intelligence Revelations
-          </span>
-        </motion.div>
-
-        {/* Main headline — staggered spring entrance with depth */}
-        <div className={isDesktop ? 'perspective-container' : ''}>
-          {headlineLines.map((line, i) => (
-            <div key={line} className="overflow-hidden mb-4 lg:mb-6">
-              <motion.h1
-                className={`font-serif text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium leading-[0.95] ${
-                  i === 1 ? 'italic text-gradient' : 'text-cream'
-                }`}
-                initial={{
-                  opacity: 0,
-                  y: 60,
-                  rotateX: isDesktop ? 15 : 0,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  rotateX: 0,
-                }}
-                transition={{
-                  duration: 0.9,
-                  delay: 0.15 + i * 0.12,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                {line}
-              </motion.h1>
-            </div>
-          ))}
-        </div>
-
-        <div className="mb-16" />
-
-        {/* Supporting text + CTA */}
-        <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.7,
-            delay: 0.55,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          <div>
-            <p className="font-sans text-lg text-cream-dim leading-relaxed mb-8 max-w-lg">
-              AIR is an AI content studio built on a single conviction: the most
-              powerful creative work doesn't persuade — it reveals. We make
-              cinematic advertising, branded content, and bespoke campaigns for
-              those who want to be understood, not merely seen.
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <MagneticButton href="#portfolio" primary>
-                See the Work
-              </MagneticButton>
-              <MagneticButton href="#quiz">Reveal Yourself</MagneticButton>
-            </div>
-          </div>
-
-          {/* Stats — glass treatment */}
-          <div className="flex flex-col justify-center gap-8 lg:pl-12 lg:border-l lg:border-border">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                className="glass rounded-lg px-4 py-3 border-gradient"
-                initial={{ opacity: 0, x: 16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.6,
-                  delay: 0.7 + i * 0.12,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <p className="font-serif text-2xl text-gold mb-1">
-                  {stat.value}
-                </p>
-                <p className="font-mono text-xs text-muted tracking-widest uppercase">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator — fades with scroll */}
-      <motion.div
-        className="absolute bottom-8 left-8 lg:left-12 hidden sm:flex flex-col items-center gap-3"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.7 }}
+      {/* Orange circular scroll button — Arqos signature */}
+      <motion.a
+        href="#intro"
+        data-cursor
+        aria-label="Scroll to explore"
+        className="absolute left-1/2 -translate-x-1/2 bottom-[34%] z-20 flex items-center justify-center w-16 h-16 rounded-full bg-gold text-void"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.7, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         style={{ opacity: isDesktop ? scrollFade : undefined }}
+        whileHover={{ scale: 1.08 }}
       >
-        <div className="w-px h-12 bg-gradient-to-b from-gold to-transparent animate-pulse-slow" />
-        <span className="font-mono text-xs text-muted tracking-ultra rotate-90 origin-center mt-2">
-          Scroll
-        </span>
+        <motion.svg
+          width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" strokeWidth="2"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+        </motion.svg>
+      </motion.a>
+
+      {/* Bottom band: big heading (left) + tagline (right) */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 z-10"
+        style={{ y: isDesktop ? textY : 0 }}
+      >
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 pb-16 lg:pb-20">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+            {/* Big heading with orange registration dot */}
+            <motion.h1
+              className="font-display font-medium text-cream-dim leading-[0.95] tracking-tight flex items-start"
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)' }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
+              AI-Driven Revelations
+              <span className="text-gold text-[0.4em] ml-1 mt-[0.15em]">®</span>
+            </motion.h1>
+
+            {/* Tagline */}
+            <motion.p
+              className="font-sans text-sm lg:text-base text-cream-dim/80 leading-relaxed max-w-[16rem] lg:text-right shrink-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
+              It's not a content studio. It's a revelation studio.
+            </motion.p>
+          </div>
+        </div>
       </motion.div>
     </section>
-  )
-}
-
-/* ── Magnetic button with spring physics ──────────────────────────────── */
-function MagneticButton({
-  href,
-  children,
-  primary = false,
-}: {
-  href: string
-  children: React.ReactNode
-  primary?: boolean
-}) {
-  const isDesktop = useIsDesktop()
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const springX = useSpring(x, { stiffness: 200, damping: 15 })
-  const springY = useSpring(y, { stiffness: 200, damping: 15 })
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!isDesktop) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    x.set((e.clientX - cx) * 0.25)
-    y.set((e.clientY - cy) * 0.25)
-  }
-
-  const handleMouseLeave = () => {
-    x.set(0)
-    y.set(0)
-  }
-
-  return (
-    <motion.a
-      href={href}
-      data-cursor
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className={`${primary ? 'btn-primary' : 'btn-ghost'} ${primary ? 'btn-glow' : ''}`}
-      style={{ x: springX, y: springY }}
-    >
-      {children}
-    </motion.a>
   )
 }

@@ -27,7 +27,7 @@ export function RevealQuiz() {
           <span className="section-label block mb-4">— Reveal Yourself</span>
           <h2 className="font-serif text-4xl lg:text-5xl font-medium text-cream leading-tight mb-6">
             Three questions.<br />
-            <span className="italic text-gradient">One revelation.</span>
+            <span className="text-muted">One revelation.</span>
           </h2>
           <p className="font-sans text-cream-dim max-w-lg mx-auto leading-relaxed">
             There are no correct answers. There is only your answer — and what it reveals

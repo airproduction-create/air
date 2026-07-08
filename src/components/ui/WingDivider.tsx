@@ -29,7 +29,7 @@ export function WingDivider({ className = '', size = 'md', opacity = 0.35 }: Win
       <div
         className="absolute left-0 right-1/2 h-px transition-all duration-1200 ease-out"
         style={{
-          background: 'linear-gradient(to left, rgba(201,169,110,0.35), transparent)',
+          background: 'linear-gradient(to left, rgba(255,87,0,0.35), transparent)',
           transform: visible ? 'scaleX(1)' : 'scaleX(0)',
           transformOrigin: 'right',
           transitionDuration: '1.2s',
@@ -39,7 +39,7 @@ export function WingDivider({ className = '', size = 'md', opacity = 0.35 }: Win
       <div
         className="absolute left-1/2 right-0 h-px transition-all duration-1200 ease-out"
         style={{
-          background: 'linear-gradient(to right, rgba(201,169,110,0.35), transparent)',
+          background: 'linear-gradient(to right, rgba(255,87,0,0.35), transparent)',
           transform: visible ? 'scaleX(1)' : 'scaleX(0)',
           transformOrigin: 'left',
           transitionDuration: '1.2s',
@@ -56,7 +56,7 @@ export function WingDivider({ className = '', size = 'md', opacity = 0.35 }: Win
           transition: 'opacity 1s ease 0.2s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
         }}
         fill="none"
-        stroke="#c9a96e"
+        stroke="#ff5700"
         strokeWidth="0.75"
       >
         {/* Left wing — outer feather line */}
@@ -78,7 +78,7 @@ export function WingDivider({ className = '', size = 'md', opacity = 0.35 }: Win
         <path d="M140,32 C150,24 168,16 200,14 C222,13 250,18 272,28" strokeOpacity="0.15" />
 
         {/* Centre mark */}
-        <circle cx="140" cy="32" r="1.5" fill="#c9a96e" fillOpacity="0.5" stroke="none" />
+        <circle cx="140" cy="32" r="1.5" fill="#ff5700" fillOpacity="0.5" stroke="none" />
         <circle cx="140" cy="32" r="4" strokeOpacity="0.25" />
         <circle cx="140" cy="32" r="7" strokeOpacity="0.12" />
       </svg>
@@ -94,7 +94,7 @@ export function WingWatermark({ className = '' }: { className?: string }) {
         viewBox="0 0 560 128"
         className="w-full max-w-4xl h-auto opacity-[0.025]"
         fill="none"
-        stroke="#c9a96e"
+        stroke="#ff5700"
         strokeWidth="1"
       >
         <path d="M280,64 C250,36 200,16 130,20 C84,22 36,40 0,64" />
@@ -103,7 +103,7 @@ export function WingWatermark({ className = '' }: { className?: string }) {
         <path d="M280,64 C330,36 380,16 450,20 C496,22 524,40 560,64" />
         <path d="M280,64 C316,44 370,28 444,32 C488,34 532,50 560,64" />
         <path d="M280,64 C322,52 380,40 456,44" />
-        <circle cx="280" cy="64" r="3" fill="#c9a96e" stroke="none" />
+        <circle cx="280" cy="64" r="3" fill="#ff5700" stroke="none" />
         <circle cx="280" cy="64" r="8" />
         <circle cx="280" cy="64" r="14" />
       </svg>

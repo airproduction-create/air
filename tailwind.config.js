@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    '/Users/bonolomokgosi/air-co/index.html',
-    '/Users/bonolomokgosi/air-co/src/**/*.{js,ts,jsx,tsx}',
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -13,18 +13,23 @@ export default {
         'surface-2': '#1e1e1e',
         border: '#2a2a2a',
         'border-light': '#363636',
-        gold: '#c9a96e',
-        'gold-dim': '#a08455',
-        'gold-bright': '#e0c080',
-        cream: '#f5f0e8',
-        'cream-dim': '#c8c4bc',
+        gold: '#ff5700',
+        'gold-dim': '#d94a00',
+        'gold-bright': '#ff7a33',
+        accent: '#ff5700',
+        'accent-dim': '#d94a00',
+        'accent-bright': '#ff7a33',
+        cream: '#f5f5f4',
+        'cream-dim': '#b4b4b1',
         muted: '#6b6b6b',
-        teal: '#2a4a4f',
-        'teal-bright': '#3d6b72',
+        rust: '#e5533d',
+        chrome: '#c8c8cc',
+        'chrome-dim': '#8a8a90',
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Switzer', 'Inter', 'system-ui', 'sans-serif'],
+        serif: ['Switzer', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Switzer', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
       },
       letterSpacing: {

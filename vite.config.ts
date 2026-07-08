@@ -28,18 +28,28 @@ export default defineConfig({
                 'surface-2': '#1e1e1e',
                 border: '#2a2a2a',
                 'border-light': '#363636',
-                gold: '#c9a96e',
-                'gold-dim': '#a08455',
-                'gold-bright': '#e0c080',
-                cream: '#f5f0e8',
-                'cream-dim': '#c8c4bc',
+                // Arqos orange accent — mapped onto the legacy `gold*` names so
+                // every existing text-gold/border-gold usage recolors for free.
+                gold: '#ff5700',
+                'gold-dim': '#d94a00',
+                'gold-bright': '#ff7a33',
+                accent: '#ff5700',
+                'accent-dim': '#d94a00',
+                'accent-bright': '#ff7a33',
+                // Neutral near-white B&W scale (cooler than the old warm cream).
+                cream: '#f5f5f4',
+                'cream-dim': '#b4b4b1',
                 muted: '#6b6b6b',
-                teal: '#2a4a4f',
-                'teal-bright': '#3d6b72',
+                rust: '#e5533d',
+                chrome: '#c8c8cc',
+                'chrome-dim': '#8a8a90',
               },
               fontFamily: {
-                serif: ['"Playfair Display"', 'Georgia', 'serif'],
-                sans: ['Inter', 'system-ui', 'sans-serif'],
+                // Switzer grotesque for both display (font-serif slot) and body —
+                // matches the Arqos template. Mono kept for numbered labels.
+                display: ['Switzer', 'Inter', 'system-ui', 'sans-serif'],
+                serif: ['Switzer', 'Inter', 'system-ui', 'sans-serif'],
+                sans: ['Switzer', 'Inter', 'system-ui', 'sans-serif'],
                 mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
               },
               letterSpacing: {
@@ -72,8 +82,8 @@ export default defineConfig({
                   '50%': { transform: 'translateY(-12px)' },
                 },
                 glow: {
-                  '0%': { boxShadow: '0 0 20px rgba(201, 169, 110, 0.1)' },
-                  '100%': { boxShadow: '0 0 40px rgba(201, 169, 110, 0.3)' },
+                  '0%': { boxShadow: '0 0 20px rgba(255, 87, 0, 0.12)' },
+                  '100%': { boxShadow: '0 0 44px rgba(255, 87, 0, 0.34)' },
                 },
               },
             },
