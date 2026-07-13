@@ -72,7 +72,7 @@ export function Portfolio() {
                     <span
                       className="font-mono text-xs transition-colors duration-300"
                       style={{
-                        color: hovered === item.id || active === item.id ? '#ff5700' : '#6b6b6b',
+                        color: hovered === item.id || active === item.id ? '#ff5700' : '#8f8f8f',
                         textShadow: hovered === item.id || active === item.id
                           ? '0 0 12px rgba(255,87,0,0.4)'
                           : 'none',

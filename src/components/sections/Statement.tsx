@@ -12,7 +12,7 @@ export function Statement() {
     target: ref,
     offset: ['start 0.9', 'start 0.35'],
   })
-  const emphasis = useTransform(scrollYProgress, [0, 1], ['#6b6b6b', '#f5f5f4'])
+  const emphasis = useTransform(scrollYProgress, [0, 1], ['#8f8f8f', '#f5f5f4'])
 
   return (
     <section id="intro" className="bg-void py-40 lg:py-64 overflow-hidden">

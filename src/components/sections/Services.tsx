@@ -150,7 +150,7 @@ function ServiceCard({
           <svg
             width="20" height="20" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" strokeWidth="1.5"
-            style={{ color: hovered ? '#ff5700' : '#6b6b6b', transition: 'color 0.3s' }}
+            style={{ color: hovered ? '#ff5700' : '#8f8f8f', transition: 'color 0.3s' }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon]} />
           </svg>

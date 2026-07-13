@@ -21,7 +21,7 @@ export default {
         'accent-bright': '#ff7a33',
         cream: '#f5f5f4',
         'cream-dim': '#b4b4b1',
-        muted: '#6b6b6b',
+        muted: '#8f8f8f',
         rust: '#e5533d',
         chrome: '#c8c8cc',
         'chrome-dim': '#8a8a90',

@@ -1,0 +1,24 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="1200" height="1200" fill="#080808"/>
+  <!-- content lives inside the centre 1.905:1 band (y 285..915) so a centre crop captures it -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="0" y1="750" x2="1200" y2="750"/>
+    <line x1="400" y1="285" x2="400" y2="915"/>
+    <line x1="800" y1="285" x2="800" y2="915"/>
+  </g>
+  <radialGradient id="glow" cx="26%" cy="40%" r="45%">
+    <stop offset="0%" stop-color="#ff5700" stop-opacity="0.13"/>
+    <stop offset="100%" stop-color="#ff5700" stop-opacity="0"/>
+  </radialGradient>
+  <rect x="0" y="285" width="1200" height="630" fill="url(#glow)"/>
+
+  <text x="80" y="392" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="38" fill="#f5f5f4" letter-spacing="1">AIR<tspan fill="#ff5700" font-size="19" dy="-15">®</tspan></text>
+
+  <text x="80" y="588" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="60" fill="#f5f5f4" letter-spacing="-2">We don't make content.</text>
+  <text x="80" y="662" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="60" fill="#ff5700" letter-spacing="-2">We reveal truth.</text>
+
+  <circle cx="88" cy="852" r="6" fill="#ff5700"/>
+  <text x="108" y="860" font-family="Helvetica, Arial, sans-serif" font-weight="400" font-size="21" fill="#8f8f8f" letter-spacing="0.5">Artificial Intelligence Revelations — AI-native content studio</text>
+</svg>

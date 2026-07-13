@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 
 const navLinks = [
   { index: '1.0', label: 'Work', href: '#portfolio' },
-  { index: '2.0', label: 'Revelation', href: '#revelation' },
-  { index: '3.0', label: 'Services', href: '#services' },
-  { index: '4.0', label: 'Reveal', href: '#quiz' },
+  { index: '2.0', label: 'Services', href: '#services' },
+  { index: '3.0', label: 'Journal', href: '#revelation' },
+  { index: '4.0', label: 'Quiz', href: '#quiz' },
 ]
 
 /* Arqos-style grid-dots / close glyph inside the rounded menu button */
@@ -65,16 +65,25 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Rounded grid-dots menu button */}
-        <button
-          className="flex items-center justify-center w-14 h-11 rounded-xl bg-obsidian border border-border hover:border-gold transition-colors duration-300 shrink-0"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-          data-cursor
-        >
-          <MenuGlyph open={menuOpen} />
-        </button>
+        {/* Right: persistent Begin CTA + grid-dots menu */}
+        <div className="flex items-center gap-3 shrink-0">
+          <a
+            href="#contact"
+            data-cursor
+            className="hidden sm:inline-flex items-center h-11 px-5 rounded-xl font-mono text-xs tracking-widest uppercase bg-gold text-void hover:bg-gold-bright transition-colors duration-300"
+          >
+            Begin
+          </a>
+          <button
+            className="flex items-center justify-center w-14 h-11 rounded-xl bg-obsidian border border-border hover:border-gold transition-colors duration-300"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            data-cursor
+          >
+            <MenuGlyph open={menuOpen} />
+          </button>
+        </div>
       </div>
 
       {/* Dropdown menu (all breakpoints) */}

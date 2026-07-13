@@ -7,7 +7,7 @@ export function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [form, setForm] = useState({ name: '', email: '', context: '', audience: '' })
+  const [form, setForm] = useState({ name: '', email: '', context: '', audience: '', website: '' })
   const isDesktop = useIsDesktop()
 
   async function handleSubmit(e: React.FormEvent) {
@@ -131,6 +131,18 @@ export function Contact() {
                           ))}
                         </div>
                       </div>
+
+                      {/* Honeypot — hidden from users, catches bots */}
+                      <input
+                        type="text"
+                        name="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        value={form.website}
+                        onChange={(e) => setForm({ ...form, website: e.target.value })}
+                        className="absolute -left-[9999px] w-px h-px opacity-0"
+                      />
 
                       <div>
                         <label className="font-mono text-xs text-muted tracking-widest uppercase block mb-3">Name</label>

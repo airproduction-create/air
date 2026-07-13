@@ -10,8 +10,34 @@ interface QuizResultProps {
 
 export function QuizResult({ result, shareToken, onReset }: QuizResultProps) {
   const [copied, setCopied] = useState(false)
+  const [email, setEmail] = useState('')
+  const [leadState, setLeadState] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
 
   const shareUrl = `${window.location.origin}/reveal/${shareToken}`
+
+  async function handleLead(e: React.FormEvent) {
+    e.preventDefault()
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setLeadState('error')
+      return
+    }
+    setLeadState('loading')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Reveal Yourself lead',
+          email: email.trim(),
+          audience: 'Quiz',
+          context: `Quiz archetype: ${result.archetype} — "${result.headline}". Requested their full revelation.`,
+        }),
+      })
+      setLeadState(res.ok ? 'sent' : 'error')
+    } catch {
+      setLeadState('error')
+    }
+  }
 
   async function handleCopy() {
     try {
@@ -82,13 +108,41 @@ export function QuizResult({ result, shareToken, onReset }: QuizResultProps) {
               </div>
             </div>
 
-            {/* AIR connection */}
+            {/* AIR connection + lead capture */}
             <div className="border-t border-border pt-8 mb-8">
-              <p className="font-sans text-sm text-muted leading-relaxed">
+              <p className="font-sans text-sm text-muted leading-relaxed mb-6">
                 At AIR, we work with every creative archetype — because revelation doesn't belong to one
-                type of mind. It requires them all. If this resonates,{' '}
-                <a href="#contact" className="text-gold hover:underline">let's talk</a>.
+                type of mind. It requires them all.
               </p>
+
+              {leadState === 'sent' ? (
+                <p className="font-mono text-xs text-gold tracking-wider">
+                  ✓ On its way. We'll send your full revelation shortly.
+                </p>
+              ) : (
+                <form onSubmit={handleLead} className="flex flex-col sm:flex-row gap-3 max-w-md">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); if (leadState === 'error') setLeadState('idle') }}
+                    placeholder="you@email.com"
+                    aria-label="Email for your full revelation"
+                    className="flex-1 bg-transparent border border-border px-4 py-3 font-sans text-sm text-cream focus:outline-none focus:border-gold transition-colors duration-200"
+                  />
+                  <button
+                    type="submit"
+                    data-cursor
+                    disabled={leadState === 'loading'}
+                    className="btn-primary btn-glow justify-center shrink-0 disabled:opacity-50"
+                  >
+                    {leadState === 'loading' ? 'Sending…' : 'Email me my revelation'}
+                  </button>
+                </form>
+              )}
+              {leadState === 'error' && (
+                <p className="font-mono text-xs text-rust mt-3">Enter a valid email and try again.</p>
+              )}
             </div>
 
             {/* Share + Reset */}

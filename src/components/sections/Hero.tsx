@@ -92,33 +92,54 @@ export function Hero() {
         </motion.svg>
       </motion.a>
 
-      {/* Bottom band: big heading (left) + tagline (right) */}
+      {/* Bottom band: headline + value prop + CTAs (left), tagline (right) */}
       <motion.div
         className="absolute inset-x-0 bottom-0 z-10"
         style={{ y: isDesktop ? textY : 0 }}
       >
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 pb-16 lg:pb-20">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-            {/* Big heading with orange registration dot */}
-            <motion.h1
-              className="font-display font-medium text-cream-dim leading-[0.95] tracking-tight flex items-start"
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)' }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            >
-              AI-Driven Revelations
-              <span className="text-gold text-[0.4em] ml-1 mt-[0.15em]">®</span>
-            </motion.h1>
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 pb-12 lg:pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:items-end">
+            {/* Left: headline + clarity line + CTAs */}
+            <div className="lg:col-span-8">
+              <motion.h1
+                className="font-display font-medium text-cream leading-[0.95] tracking-tight flex items-start"
+                style={{ fontSize: 'clamp(2.25rem, 5vw, 5rem)' }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              >
+                We don't make content.
+                <span className="text-gold text-[0.35em] ml-1 mt-[0.1em]">®</span>
+              </motion.h1>
+              <motion.p
+                className="font-display font-medium text-muted leading-[0.95] tracking-tight mb-6"
+                style={{ fontSize: 'clamp(2.25rem, 5vw, 5rem)' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+              >
+                We reveal truth.
+              </motion.p>
+              <motion.div
+                className="flex flex-wrap items-center gap-4"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <a href="#contact" data-cursor className="btn-primary btn-glow">Begin</a>
+                <a href="#portfolio" data-cursor className="btn-ghost">See the Work</a>
+              </motion.div>
+            </div>
 
-            {/* Tagline */}
+            {/* Right: what we do */}
             <motion.p
-              className="font-sans text-sm lg:text-base text-cream-dim/80 leading-relaxed max-w-[16rem] lg:text-right shrink-0"
+              className="lg:col-span-4 font-sans text-sm lg:text-base text-cream-dim leading-relaxed max-w-sm lg:text-right lg:ml-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, delay: 0.72, ease: [0.16, 1, 0.3, 1] }}
             >
-              It's not a content studio. It's a revelation studio.
+              An AI-native studio making cinematic advertising &amp; branded content — for brands that
+              want to be understood, not merely seen.
             </motion.p>
           </div>
         </div>

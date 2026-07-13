@@ -24,17 +24,33 @@ export default async function handler(req: Request): Promise<Response> {
     return new Response('Method not allowed', { status: 405 })
   }
 
-  let body: { name?: string; email?: string; context?: string; audience?: string }
+  let body: { name?: string; email?: string; context?: string; audience?: string; website?: string }
   try {
     body = await req.json()
   } catch {
     return json({ error: 'Invalid request body' }, 400)
   }
 
-  const { name, email, context, audience } = body
+  const { name, email, context, audience, website } = body
+
+  // Honeypot: bots fill hidden fields. Pretend success, drop silently.
+  if (website && website.trim()) {
+    return json({ success: true }, 200)
+  }
 
   if (!name?.trim() || !email?.trim() || !context?.trim()) {
     return json({ error: 'name, email, and context are required' }, 400)
+  }
+
+  // Email format
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    return json({ error: 'Please enter a valid email address.' }, 400)
+  }
+
+  // Length caps (guard against abuse / oversized payloads)
+  if (name.trim().length > 200 || email.trim().length > 320 ||
+      context.trim().length > 5000 || (audience?.trim().length ?? 0) > 100) {
+    return json({ error: 'One or more fields exceed the allowed length.' }, 400)
   }
 
   // 1. Save to Supabase
@@ -105,31 +121,31 @@ function notificationEmail({
   context: string
 }) {
   return `
-    <div style="font-family: monospace; padding: 32px; background: #080808; color: #f5f0e8; max-width: 600px; margin: 0 auto;">
-      <div style="border-left: 3px solid #c9a96e; padding-left: 16px; margin-bottom: 24px;">
-        <h2 style="color: #c9a96e; margin: 0 0 4px;">New Inquiry</h2>
-        <p style="color: #6b6b6b; margin: 0; font-size: 12px;">via airco.agency contact form</p>
+    <div style="font-family: monospace; padding: 32px; background: #080808; color: #f5f5f4; max-width: 600px; margin: 0 auto;">
+      <div style="border-left: 3px solid #ff5700; padding-left: 16px; margin-bottom: 24px;">
+        <h2 style="color: #ff5700; margin: 0 0 4px;">New Inquiry</h2>
+        <p style="color: #6b6b6b; margin: 0; font-size: 12px;">via airstu.netlify.app contact form</p>
       </div>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
         <tr>
           <td style="padding: 10px 0; color: #6b6b6b; width: 100px; vertical-align: top;">Name</td>
-          <td style="padding: 10px 0; color: #f5f0e8;">${escapeHtml(name)}</td>
+          <td style="padding: 10px 0; color: #f5f5f4;">${escapeHtml(name)}</td>
         </tr>
         <tr>
           <td style="padding: 10px 0; color: #6b6b6b; vertical-align: top;">Email</td>
           <td style="padding: 10px 0;">
-            <a href="mailto:${escapeHtml(email)}" style="color: #c9a96e;">${escapeHtml(email)}</a>
+            <a href="mailto:${escapeHtml(email)}" style="color: #ff5700;">${escapeHtml(email)}</a>
           </td>
         </tr>
         ${audience ? `
         <tr>
           <td style="padding: 10px 0; color: #6b6b6b; vertical-align: top;">Audience</td>
-          <td style="padding: 10px 0; color: #f5f0e8;">${escapeHtml(audience)}</td>
+          <td style="padding: 10px 0; color: #f5f5f4;">${escapeHtml(audience)}</td>
         </tr>` : ''}
       </table>
       <div style="background: #0f0f0f; border: 1px solid #1e1e1e; padding: 20px;">
         <p style="color: #6b6b6b; font-size: 11px; margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.1em;">What they're trying to reveal</p>
-        <p style="color: #f5f0e8; margin: 0; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(context)}</p>
+        <p style="color: #f5f5f4; margin: 0; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(context)}</p>
       </div>
     </div>
   `

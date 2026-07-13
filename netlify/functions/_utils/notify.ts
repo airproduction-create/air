@@ -68,7 +68,7 @@ async function notifyEmail({ title, publishDate, error, step }: NotifyPayload) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'AIR CO System <noreply@airco.agency>',
+      from: 'AIR CO System <noreply@airstu.netlify.app>',
       to,
       subject: `⚠️ LinkedIn publish failed: ${title}`,
       html: `
