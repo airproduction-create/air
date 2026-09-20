@@ -72,7 +72,7 @@ export function Portfolio() {
                     <span
                       className="font-mono text-xs transition-colors duration-300"
                       style={{
-                        color: hovered === item.id || active === item.id ? '#ff5700' : '#8f8f8f',
+                        color: hovered === item.id || active === item.id ? '#C1703F' : '#7C7361',
                         textShadow: hovered === item.id || active === item.id
                           ? '0 0 12px rgba(255,87,0,0.4)'
                           : 'none',
@@ -87,7 +87,7 @@ export function Portfolio() {
                     <h3
                       className="font-serif text-2xl lg:text-3xl text-cream mb-1 transition-all duration-300"
                       style={{
-                        color: hovered === item.id || active === item.id ? '#ff5700' : undefined,
+                        color: hovered === item.id || active === item.id ? '#C1703F' : undefined,
                         transform: isDesktop && hovered === item.id ? 'translateX(6px)' : 'translateX(0)',
                       }}
                     >
@@ -108,7 +108,7 @@ export function Portfolio() {
                     <motion.div
                       className="w-6 h-6 border flex items-center justify-center"
                       style={{
-                        borderColor: active === item.id ? '#ff5700' : '#2a2a2a',
+                        borderColor: active === item.id ? '#C1703F' : '#3A3327',
                       }}
                       animate={{ rotate: active === item.id ? 45 : 0 }}
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}

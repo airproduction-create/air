@@ -81,61 +81,76 @@ export function About() {
             </RevealText>
           </div>
 
-          {/* Right: Principles */}
-          <div className="space-y-px bg-border">
-            {principles.map((item) => (
-              <RevealText key={item.number} delay={parseInt(item.number) * 80}>
-                <div
-                  className="bg-surface relative overflow-hidden transition-colors duration-300"
-                  style={{ backgroundColor: hoveredPrinciple === item.number && isDesktop ? '#1e1e1e' : '#161616' }}
-                  onMouseEnter={() => isDesktop && setHoveredPrinciple(item.number)}
-                  onMouseLeave={() => isDesktop && setHoveredPrinciple(null)}
-                >
-                  {/* Gold left border reveal */}
+          {/* Right: Principles — editorial bento (01 & 04 lead, full width) */}
+          <div className="grid grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+            {principles.map((item, i) => {
+              const isLead = i === 0 || i === 3
+              return (
+                <RevealText key={item.number} delay={parseInt(item.number) * 80} className={isLead ? 'col-span-2' : ''}>
                   <div
-                    className="absolute left-0 top-0 bottom-0 w-0.5 transition-all duration-500"
-                    style={{
-                      background: '#ff5700',
-                      opacity: hoveredPrinciple === item.number && isDesktop ? 1 : 0,
-                      transform: hoveredPrinciple === item.number && isDesktop ? 'scaleY(1)' : 'scaleY(0)',
-                      transformOrigin: 'top',
-                    }}
-                  />
+                    className="bg-surface relative overflow-hidden transition-colors duration-300 h-full"
+                    style={{ backgroundColor: hoveredPrinciple === item.number && isDesktop ? '#2A2318' : '#211B14' }}
+                    onMouseEnter={() => isDesktop && setHoveredPrinciple(item.number)}
+                    onMouseLeave={() => isDesktop && setHoveredPrinciple(null)}
+                  >
+                    {/* Ghost numeral */}
+                    <span
+                      aria-hidden="true"
+                      className="absolute -top-2 right-4 font-display font-extrabold leading-none pointer-events-none select-none transition-all duration-500"
+                      style={{
+                        fontSize: isLead ? 'clamp(70px,9vw,140px)' : 'clamp(56px,7vw,96px)',
+                        color: hoveredPrinciple === item.number && isDesktop ? '#C1703F' : '#EDE4D3',
+                        opacity: hoveredPrinciple === item.number && isDesktop ? 0.1 : 0.05,
+                      }}
+                    >
+                      {item.number}
+                    </span>
 
-                  <div className="p-8">
-                    <div className="flex items-start gap-6">
-                      <span className="font-mono text-xs text-gold shrink-0 mt-1">{item.number}</span>
-                      <div className="flex-1">
-                        <h3
-                          className="font-serif text-lg text-cream mb-2 transition-colors duration-300"
-                          style={{ color: hoveredPrinciple === item.number && isDesktop ? '#ff5700' : undefined }}
+                    {/* Gold left border reveal */}
+                    <div
+                      className="absolute left-0 top-0 bottom-0 w-0.5 transition-all duration-500"
+                      style={{
+                        background: '#C1703F',
+                        opacity: hoveredPrinciple === item.number && isDesktop ? 1 : 0,
+                        transform: hoveredPrinciple === item.number && isDesktop ? 'scaleY(1)' : 'scaleY(0)',
+                        transformOrigin: 'top',
+                      }}
+                    />
+
+                    <div className={isLead ? 'relative p-8 lg:p-10 max-w-[36ch]' : 'relative p-8 h-full flex flex-col'}>
+                      <span className="font-mono text-xs text-gold block mb-3">{item.number}</span>
+                      <h3
+                        className="font-serif text-cream mb-2 transition-colors duration-300"
+                        style={{
+                          fontSize: isLead ? 'clamp(1.25rem,2.2vw,1.6rem)' : undefined,
+                          color: hoveredPrinciple === item.number && isDesktop ? '#C1703F' : undefined,
+                        }}
+                      >
+                        {item.principle}
+                      </h3>
+                      <p className="font-sans text-sm text-muted leading-relaxed">
+                        {item.description}
+                      </p>
+
+                      {/* Hover-reveal addendum — desktop only */}
+                      {isDesktop && (
+                        <p
+                          className="font-mono text-xs text-gold/70 leading-relaxed mt-3"
+                          style={{
+                            maxHeight: hoveredPrinciple === item.number ? '40px' : '0px',
+                            opacity: hoveredPrinciple === item.number ? 1 : 0,
+                            overflow: 'hidden',
+                            transition: 'max-height 0.4s ease, opacity 0.3s ease 0.1s',
+                          }}
                         >
-                          {item.principle}
-                        </h3>
-                        <p className="font-sans text-sm text-muted leading-relaxed">
-                          {item.description}
+                          {item.hover}
                         </p>
-
-                        {/* Hover-reveal addendum — desktop only */}
-                        {isDesktop && (
-                          <p
-                            className="font-mono text-xs text-gold/70 leading-relaxed mt-3"
-                            style={{
-                              maxHeight: hoveredPrinciple === item.number ? '40px' : '0px',
-                              opacity: hoveredPrinciple === item.number ? 1 : 0,
-                              overflow: 'hidden',
-                              transition: 'max-height 0.4s ease, opacity 0.3s ease 0.1s',
-                            }}
-                          >
-                            {item.hover}
-                          </p>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              </RevealText>
-            ))}
+                </RevealText>
+              )
+            })}
           </div>
 
         </div>

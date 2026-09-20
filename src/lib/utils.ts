@@ -26,14 +26,14 @@ export function getTodayString(): string {
 
 export function categoryColor(category: string): string {
   const colors: Record<string, string> = {
-    campaign: '#ff5700',
-    personality: '#ff5700',
-    movement: '#ff5700',
-    artwork: '#ff5700',
-    film: '#ff5700',
-    innovation: '#ff5700',
+    campaign: '#C1703F',
+    personality: '#C1703F',
+    movement: '#C1703F',
+    artwork: '#C1703F',
+    film: '#C1703F',
+    innovation: '#C1703F',
   }
-  return colors[category] || '#ff5700'
+  return colors[category] || '#C1703F'
 }
 
 export function cn(...classes: (string | undefined | false | null)[]): string {

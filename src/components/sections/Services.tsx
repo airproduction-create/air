@@ -125,7 +125,7 @@ function ServiceCard({
       <div
         className="absolute inset-0 border transition-opacity duration-500"
         style={{
-          borderColor: '#ff5700',
+          borderColor: '#C1703F',
           opacity: isDesktop && hovered ? 0.25 : 0,
         }}
       />
@@ -144,13 +144,13 @@ function ServiceCard({
         <div
           className="w-10 h-10 border flex items-center justify-center transition-all duration-300"
           style={{
-            borderColor: hovered ? '#ff5700' : '#2a2a2a',
+            borderColor: hovered ? '#C1703F' : '#3A3327',
           }}
         >
           <svg
             width="20" height="20" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" strokeWidth="1.5"
-            style={{ color: hovered ? '#ff5700' : '#8f8f8f', transition: 'color 0.3s' }}
+            style={{ color: hovered ? '#C1703F' : '#7C7361', transition: 'color 0.3s' }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d={iconPaths[service.icon]} />
           </svg>
@@ -165,7 +165,7 @@ function ServiceCard({
         <div>
           <h3
             className="font-serif text-2xl text-cream mb-4 leading-snug transition-colors duration-300"
-            style={{ color: hovered ? '#ff5700' : undefined }}
+            style={{ color: hovered ? '#C1703F' : undefined }}
           >
             {service.title}
           </h3>

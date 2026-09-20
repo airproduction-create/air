@@ -103,7 +103,7 @@ export const quizResults: Record<string, QuizResult> = {
     description: 'You approach creativity as a structural problem. You believe that before anything beautiful can be built, its foundations must be absolutely sound. You are drawn to the logic beneath the aesthetic — the why beneath the what.',
     revelation: 'Your greatest work happens when you trust that the structure you\'ve built is strong enough to hold the unexpected. The scaffold isn\'t the building — it\'s what makes the building possible.',
     trait: 'Precision in service of transcendence',
-    color: '#ff5700',
+    color: '#C1703F',
   },
   revealer: {
     archetype: 'revealer',
@@ -111,7 +111,7 @@ export const quizResults: Record<string, QuizResult> = {
     description: 'You perceive what others overlook. Not through analysis but through recognition — as if the hidden truth of a thing arrives whole, fully formed, needing only to be named. Your instincts are often faster than your reasoning.',
     revelation: 'The risk of your gift is that you sometimes move on before others have caught up. The work of the Revealer isn\'t just to see — it\'s to make others see too. That requires patience with the visible world.',
     trait: 'Truth-sensing at depth',
-    color: '#ff5700',
+    color: '#C1703F',
   },
   connector: {
     archetype: 'connector',
@@ -119,7 +119,7 @@ export const quizResults: Record<string, QuizResult> = {
     description: 'You think in patterns and parallels. When a problem in branding reminds you of a solution in biology, or a campaign challenge mirrors a move from jazz improvisation, you follow that thread with conviction. Cross-domain thinking is your native language.',
     revelation: 'The most profound connections aren\'t found — they\'re built. Your gift is recognising them, but your power comes from building the bridge deliberately enough that others can cross it behind you.',
     trait: 'Cross-domain intelligence',
-    color: '#ff5700',
+    color: '#C1703F',
   },
   provocateur: {
     archetype: 'provocateur',
@@ -127,7 +127,7 @@ export const quizResults: Record<string, QuizResult> = {
     description: 'You have a low tolerance for false premises. When a brief arrives, your first move is to interrogate whether the question itself is right. You make people uncomfortable — productively — because you refuse to accept the frame others hand you.',
     revelation: 'Disruption without direction is just noise. The Provocateur\'s deepest work happens when the challenge leads somewhere specific — when the discomfort has a destination. What are you moving people toward?',
     trait: 'Subversive clarity',
-    color: '#ff5700',
+    color: '#C1703F',
   },
 }
 

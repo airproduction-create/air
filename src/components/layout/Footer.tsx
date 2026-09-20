@@ -1,5 +1,13 @@
 import { motion } from 'framer-motion'
 
+function Logomark() {
+  return (
+    <svg className="w-[22px] h-[15px]" viewBox="0 0 30 20" fill="none" aria-hidden="true">
+      <path d="M2 17 Q10 19 15 12 Q20 5 28 3" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 const navItems = [
   { label: 'Work', href: '#portfolio' },
   { label: 'Services', href: '#services' },
@@ -45,8 +53,9 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 py-16">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <p className="font-display text-2xl font-bold text-cream tracking-tight mb-3">
-              AIR<span className="align-super text-[0.5em] text-gold">®</span>
+            <p className="flex items-center gap-2 text-cream mb-3">
+              <Logomark />
+              <span className="font-display text-2xl font-bold tracking-tight">AiR</span>
             </p>
             <p className="font-mono text-[10px] text-muted tracking-ultra uppercase">
               Artificial Intelligence<br />Revelations

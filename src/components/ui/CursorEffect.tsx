@@ -22,7 +22,7 @@ export function CursorEffect() {
         ref={dotRef}
         className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[9998] transition-opacity duration-200"
         style={{
-          background: cursor.isHovering ? '#ff7a33' : '#ff5700',
+          background: cursor.isHovering ? '#D68A5C' : '#C1703F',
           opacity: cursor.x < 0 ? 0 : 1,
         }}
       />
