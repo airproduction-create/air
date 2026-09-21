@@ -288,15 +288,30 @@ body {
   display: inline-block;
   transform: translateX(1.05em);
 }
-@media (max-width: 480px) {
-  .hero-word {
-    font-size: clamp(2.6rem, 12.5vw, 4.2rem);
+@media (max-width: 760px) {
+  /* The foreground cutout is hidden on mobile, so the "make" fade + layered
+     X-offsets that blended into it just read as broken, colliding text. Reset
+     to a clean, solid, centered three-line lockup. */
+  .hw-make {
+    -webkit-mask-image: none;
+    mask-image: none;
+    transform: none;
   }
   .hw-we {
     transform: none;
   }
   .hw-dont {
-    transform: translateX(0.3em);
+    /* No offset to fake the space on mobile, so add a real gap between the words. */
+    transform: none;
+    margin-left: 0.28em;
+  }
+  .hero-word {
+    line-height: 0.94;
+  }
+}
+@media (max-width: 480px) {
+  .hero-word {
+    font-size: clamp(2.6rem, 12.5vw, 4.2rem);
   }
 }
 
